@@ -56,6 +56,7 @@ import { ConfigModule } from '@nestjs/config';
       max: 10000,
       isGlobal: true,
     }),
+    
   ],
 })
 export class MainAppModule {

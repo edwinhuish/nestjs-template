@@ -14,7 +14,7 @@ export class UsersRepository extends Repository<UsersEntity> {
     });
   }
 
-  async findByIdOrThrough(user_id: number) {
+  async findByIdOrThrow(user_id: number) {
     const user = await this.findOne({
       where: {
         id: user_id,

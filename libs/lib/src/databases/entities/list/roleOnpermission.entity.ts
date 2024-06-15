@@ -4,7 +4,7 @@ import { BaseEntity } from './base.entity';
 
 @Entity({ name: 'role-permission' })
 @Index(['role_id', 'permission_id'], { unique: true })
-export class RolePermissionEntity extends BaseEntity {
+export class RoleOnPermissionEntity extends BaseEntity {
   @Column({
     type: 'int',
     nullable: false,

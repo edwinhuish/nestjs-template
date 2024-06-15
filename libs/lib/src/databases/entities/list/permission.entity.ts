@@ -2,6 +2,12 @@ import { Column, Entity } from 'typeorm';
 
 import { BaseEntity } from './base.entity';
 
+export interface IPermissionMeta {
+  api: Array<string>;
+  page: Array<string>;
+  action: Array<string>;
+}
+
 @Entity({ name: 'permission' })
 export class PermissionEntity extends BaseEntity {
   @Column({
@@ -24,4 +30,10 @@ export class PermissionEntity extends BaseEntity {
     default: true,
   })
   is_active: boolean;
+
+  @Column({
+    type: 'json',
+    nullable: true,
+  })
+  meta: IPermissionMeta;
 }

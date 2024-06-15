@@ -1,4 +1,4 @@
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, In, Repository } from 'typeorm';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PermissionEntity } from '../../entities';
 
@@ -8,9 +8,20 @@ export class PermissionsRepository extends Repository<PermissionEntity> {
     super(PermissionEntity, dataSource.createEntityManager());
   }
 
-  async findByID(id: number) {
-    return this.findOne({
-      where: { id },
+  async findByIDs(ids: number[]) {
+    const where: FindOptionsWhere<PermissionEntity> = {};
+
+    if (ids.length > 1) {
+      where.id = In(ids);
+    } else {
+      where.id = ids[0];
+    }
+
+    return this.find({
+      where: {
+        ...where,
+        is_active: true,
+      },
     });
   }
 
@@ -26,5 +37,33 @@ export class PermissionsRepository extends Repository<PermissionEntity> {
     } else {
       return permission;
     }
+  }
+
+  async findByName(names: string[]) {
+    const where: FindOptionsWhere<PermissionEntity> = {};
+    if (names.length > 1) {
+      where.name = In(names);
+    } else {
+      where.name = names[0];
+    }
+
+    return this.find({
+      where: {
+        ...where,
+      },
+    });
+  }
+
+  async collectAllPermissionMetas(ids: number[]) {
+    const permissions = await this.findByIDs(ids);
+
+    return permissions.map((permission) => {
+      return {
+        permission: { name: permission.name, is_active: permission.is_active },
+        apis: permission.meta.api,
+        pages: permission.meta.page,
+        actions: permission.meta.action,
+      };
+    });
   }
 }
