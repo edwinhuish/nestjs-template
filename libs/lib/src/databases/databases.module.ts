@@ -5,7 +5,7 @@ import { TypeOrmModule, type TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import * as Entities from './entities';
 import * as Repositories from './repositories';
-import { BUSINESS_SERVICES } from '../repo-services';
+import { BUSINESS_SERVICES } from './repo-services';
 
 const BUSINESS_ENTITIES: any[] = Object.keys(Entities)
   .map((key) => {
@@ -27,12 +27,14 @@ export class DatabaseModule {
         TypeOrmModule.forRoot({
           ...databaseConfig,
           entities: [...BUSINESS_ENTITIES],
-          synchronize: true,
         }),
         TypeOrmModule.forFeature([...BUSINESS_ENTITIES]),
       ],
       providers: [...ENTITIES, ...BUSINESS_SERVICES], // along with services setting
       exports: [...ENTITIES, ...BUSINESS_SERVICES], // along with services setting
     };
+  }
+  onModuleInit() {
+    console.log('The database has been initialized.');
   }
 }

@@ -14,6 +14,8 @@ import {
 import { NestFactory } from '@nestjs/core';
 import { MainAppModule } from './main-app.module';
 
+import appConfig from './utils/config/configurations';
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
     MainAppModule,
@@ -26,7 +28,7 @@ async function bootstrap() {
   app.set('trust proxy', 1);
 
   app.enableCors({
-    origin: ['http://localhost:4001'],
+    origin: ['*'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
@@ -52,6 +54,6 @@ async function bootstrap() {
   // app.useGlobalInterceptors(new ResponseInterceptor());
   app.useGlobalFilters();
 
-  app.listen(3000);
+  app.listen(appConfig().PORT);
 }
 bootstrap();

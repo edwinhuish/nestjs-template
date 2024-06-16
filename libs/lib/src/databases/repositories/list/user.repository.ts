@@ -14,7 +14,7 @@ export class UsersRepository extends Repository<UsersEntity> {
     });
   }
 
-  async findByIdOrThrow(user_id: number) {
+  async findByIdAndVerify(user_id: number) {
     const user = await this.findOne({
       where: {
         id: user_id,
@@ -23,9 +23,11 @@ export class UsersRepository extends Repository<UsersEntity> {
 
     if (!user) {
       throw new BadRequestException('User not found');
-    } else {
-      return user;
     }
+    if (user.is_suspended) {
+      throw new BadRequestException('User is suspended');
+    }
+    return user;
   }
 
   async findByEmail(email: string) {

@@ -1,28 +1,24 @@
-import type { Request, Response } from 'express';
+import type {
+  Request,
+  // Response
+} from 'express';
 import { get } from 'lodash';
 
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 
-import { RBACService } from '../services';
-import { Observable } from 'rxjs';
+import { RBACService } from '@app/lib/databases/repo-services/rbac.service';
 
 @Injectable()
 export class RoleGlobalGuard implements CanActivate {
   constructor(private readonly rbacService: RBACService) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<Request>();
     // const res = context.switchToHttp().getResponse<Response>();
     const current_user = get(req, 'user');
     const route = get(req, 'route.path');
 
-    const user_roles = this.rbacService.getRolesByUserId(current_user.id);
-    const permissions = this.rbacService.getPermissionsByRoles(user_roles);
-    const route_permissions =
-      this.rbacService.getRoutesByPermissions(permissions);
-
-    return true;
+    const permissions = await this.rbacService.getUserAccess(current_user.id);
+    return permissions.api.includes(route) ? true : false;
   }
 }

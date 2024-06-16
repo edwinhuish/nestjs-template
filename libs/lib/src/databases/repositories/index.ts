@@ -4,3 +4,4 @@ export * from './list/roles.repository';
 export * from './list/rolesOnpermission.repository';
 export * from './list/user-account.repository';
 export * from './list/userOnrole.repository';
+export * from './list/openAIAccount.repository';

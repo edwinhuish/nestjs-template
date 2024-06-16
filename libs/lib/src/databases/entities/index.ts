@@ -5,3 +5,4 @@ export * from './list/role.entity';
 export * from './list/roleOnpermission.entity';
 export * from './list/useOnrole.entity';
 export * from './list/user-account.entity';
+export * from './list/openai-account.entity';

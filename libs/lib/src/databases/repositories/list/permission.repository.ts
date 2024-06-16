@@ -56,14 +56,20 @@ export class PermissionsRepository extends Repository<PermissionEntity> {
 
   async collectAllPermissionMetas(ids: number[]) {
     const permissions = await this.findByIDs(ids);
+    const permission_metas = {
+      permissions: [],
+      api: [],
+      page: [],
+      action: [],
+    };
 
-    return permissions.map((permission) => {
-      return {
-        permission: { name: permission.name, is_active: permission.is_active },
-        apis: permission.meta.api,
-        pages: permission.meta.page,
-        actions: permission.meta.action,
-      };
+    permissions.map((permission) => {
+      permission_metas.permissions.push(permission.name);
+      permission_metas.api.push(permission.meta.api);
+      permission_metas.page.push(permission.meta.page);
+      permission_metas.action.push(permission.meta.action);
     });
+
+    return permission_metas;
   }
 }

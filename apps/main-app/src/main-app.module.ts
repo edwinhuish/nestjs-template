@@ -5,13 +5,17 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { HttpModule } from '@nestjs/axios';
 import { CacheModule } from '@nestjs/cache-manager';
 import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from '@app/lib/databases/databases.module';
+import appConfig from './utils/config/configurations';
+import { RedisClusterModule } from '@app/lib/redis/redis-cluster.module';
+import redisContant from '@app/lib/redis/redis.contant';
 // import { randomUUID } from 'crypto';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [() => ({})],
+      envFilePath: '.env',
     }),
     LoggerModule.forRoot({
       pinoHttp: {
@@ -56,7 +60,31 @@ import { ConfigModule } from '@nestjs/config';
       max: 10000,
       isGlobal: true,
     }),
-    
+    DatabaseModule.forRoot({
+      type: 'mysql',
+      host: appConfig().DATABASES.DATABASE_MAIN_HOST,
+      port: appConfig().DATABASES.DATABASE_MAIN_PORT,
+      username: appConfig().DATABASES.DATABASE_MAIN_USERNAME,
+      password: appConfig().DATABASES.DATABASE_MAIN_PASSWORD,
+      database: appConfig().DATABASES.DATABASE_MAIN_DATABASE,
+      synchronize: appConfig().NODE_ENV === 'development' ? true : false,
+    }),
+    RedisClusterModule.forRoot([
+      {
+        namespace: redisContant().REDIS_CACHE,
+        host: appConfig().REDIS_CLUSTER.REDIS1_HOST,
+        port: appConfig().REDIS_CLUSTER.REDIS1_PORT,
+        password: appConfig().REDIS_CLUSTER.REDIS1_PASSWORD,
+        db: appConfig().REDIS_CLUSTER.REDIS1_DB,
+      },
+      {
+        namespace: redisContant().REDIS_USER_SESSION,
+        host: appConfig().REDIS_CLUSTER.REDIS2_HOST,
+        port: appConfig().REDIS_CLUSTER.REDIS2_PORT,
+        password: appConfig().REDIS_CLUSTER.REDIS2_PASSWORD,
+        db: appConfig().REDIS_CLUSTER.REDIS2_DB,
+      },
+    ]),
   ],
 })
 export class MainAppModule {
@@ -66,3 +94,11 @@ export class MainAppModule {
     consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }
+
+// {
+//                 namespace: appConfig().REDIS1_NAMESPACE,
+//                 host: appConfig().REDIS1_HOST,
+//                 port: appConfig().REDIS1_PORT,
+//                 password: appConfig().REDIS1_PASSWORD,
+//                 db: appConfig().REDIS1_DB,
+// }

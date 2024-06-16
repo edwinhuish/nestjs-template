@@ -5,8 +5,8 @@ import {
   RolesRepository,
   UserOnRoleRepository,
   UsersRepository,
-} from '../databases/repositories';
-import { IPermissionMeta } from '../databases/entities';
+} from '../repositories';
+import { IPermissionMeta } from '../entities';
 
 @Injectable()
 export class RBACService {
@@ -18,10 +18,10 @@ export class RBACService {
     private readonly roleOnPermissionRepo: PermissionOnRoleRepository,
     private readonly roleRepo: RolesRepository,
     private readonly permissionRepo: PermissionsRepository,
-  ) {}
+  ) { }
 
   async getUserAccess(payload: { user_id: number }) {
-    const user = await this.userRepo.findByIdOrThrow(payload.user_id);
+    const user = await this.userRepo.findByIdAndVerify(payload.user_id);
     const rolesOnUser = await this.userOnRoleRepo.findByUserId(user.id);
     const permissionOnRoles = await this.roleOnPermissionRepo.findByRoleIds(
       rolesOnUser.map((uor) => uor.role_id),
@@ -34,7 +34,7 @@ export class RBACService {
   }
 
   async getUserRoles(payload: { user_id: number }) {
-    const user = await this.userRepo.findByIdOrThrow(payload.user_id);
+    const user = await this.userRepo.findByIdAndVerify(payload.user_id);
     const rolesOnUser = await this.userOnRoleRepo.findByUserId(user.id);
     const roles = await this.roleRepo.findByIDs(
       rolesOnUser.map((uor) => uor.role_id),
@@ -48,7 +48,7 @@ export class RBACService {
     user_id: number;
     role_ids: Array<number>;
   }) {
-    const user = await this.userRepo.findByIdOrThrow(payload.user_id);
+    const user = await this.userRepo.findByIdAndVerify(payload.user_id);
     // check if roles already granted to user
     const rolesOnUser = await this.userOnRoleRepo.findByUserId(user.id);
     const roleIds = rolesOnUser.map((uor) => uor.role_id);
@@ -66,7 +66,7 @@ export class RBACService {
     user_id: number;
     role_ids: Array<number>;
   }) {
-    const user = await this.userRepo.findByIdOrThrow(payload.user_id);
+    const user = await this.userRepo.findByIdAndVerify(payload.user_id);
     // check if roles already granted to user
     const rolesOnUser = await this.userOnRoleRepo.findByUserId(user.id);
     const roleIds = rolesOnUser.map((uor) => uor.role_id);

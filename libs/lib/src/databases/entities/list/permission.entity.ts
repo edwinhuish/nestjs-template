@@ -19,7 +19,7 @@ export class PermissionEntity extends BaseEntity {
   name: string;
 
   @Column({
-    type: 'text',
+    type: 'varchar',
     length: 500,
     nullable: true,
   })

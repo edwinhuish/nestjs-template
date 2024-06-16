@@ -88,14 +88,6 @@ export class UsersEntity extends BaseEntity {
   })
   title?: string;
 
-  @Column({
-    type: 'simple-array',
-    nullable: false,
-    default: '[2]',
-    comment: 'user roles',
-  })
-  role: Array<number>;
-
   // 3rd party platform user fields
   @Column({
     type: 'varchar',
@@ -113,11 +105,13 @@ export class UsersEntity extends BaseEntity {
 
   @Column({
     type: 'json',
+    nullable: true,
   })
   metadata: IUserMetadata;
 
   @Column({
     type: 'json',
+    nullable: true,
   })
   address: IAddress;
 
@@ -136,4 +130,10 @@ export class UsersEntity extends BaseEntity {
     default: '[]',
   })
   tags: Array<number>;
+
+  @Column({
+    type: 'bool',
+    default: false,
+  })
+  is_suspended: boolean;
 }
