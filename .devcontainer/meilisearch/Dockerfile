@@ -5,4 +5,4 @@ RUN chmod +x /usr/local/bin/entry.sh
 
 ENTRYPOINT [ "entry.sh" ]
 
-CMD [ "/bin/meilisearch" ]
+CMD [ ]

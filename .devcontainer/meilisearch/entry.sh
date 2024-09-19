@@ -68,4 +68,4 @@ if [ "$PUID" != "0" ] || [ "$PGID" != "0" ]; then
     fi
 fi
 
-exec tini -- su - $USERNAME -c "cd /meili_data && $@"
+exec tini -- su - $USERNAME -c "cd /meili_data && /bin/meilisearch --master-key=\"$MEILISEARCH_KEY\" $@"

@@ -36,6 +36,7 @@ services:
 
   meilisearch:
     build: meilisearch
+    command: [ "--http-addr=\"meilisearch:7700\"" ]
     restart: unless-stopped
     env_file: .env
     # ports:
