@@ -5,4 +5,5 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
   git-lfs \
   iputils-ping
 
-RUN su node -c "npm install -g pnpm"
+RUN su node -c "npm install -g pnpm" \
+  && su node -c "pnpm config --global set store-dir /pnpm-store"

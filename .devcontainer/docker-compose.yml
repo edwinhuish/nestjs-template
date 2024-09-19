@@ -9,6 +9,7 @@ services:
       - $PWD:$PWD
       - ~/.ssh:/home/node/.ssh
       - ~/.gitconfig:/home/node/.gitconfig
+      - pnpm-store:/pnpm-store
     depends_on:
       - mysql
       - redis
@@ -45,3 +46,6 @@ services:
       - ./meilisearch/data:/meili_data:rw
 
 
+volumes:
+  pnpm-store:
+    external: true
