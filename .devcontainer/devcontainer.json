@@ -11,8 +11,9 @@
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
-		"mysql:3306"
-		// "nginx:80"
+		"mysql:3306",
+		"redis:6379",
+		"meilisearch:7700"
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "yarn install",
