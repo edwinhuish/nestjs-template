@@ -42,8 +42,8 @@ export default () => ({
   // REDIS4_DB: z.string(),
   // ---------------------------------- middlewares settings
   // RABBITMQ_URI: z.string(),
-  // MEILISEARCH_URI: z.string(),
-  // MEILISEARCH_KEY: z.string(),
+  MEILISEARCH_URI: process.env.MEILISEARCH_URI,
+  MEILISEARCH_KEY: process.env.MEILISEARCH_KEY,
   // ---------------------------------- google settings
   // GOOGLE_CLIENT_ID: z.string(),
   // GOOGLE_CLIENT_SECRET: z.string(),
