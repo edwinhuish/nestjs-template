@@ -9,6 +9,7 @@ import { DatabaseModule } from '@app/lib/databases/databases.module';
 import appConfig from './utils/config/configurations';
 import { RedisClusterModule } from '@app/lib/redis/redis-cluster.module';
 import redisContant from '@app/lib/redis/redis.contant';
+import { MeiliSearchModule } from 'nestjs-meilisearch';
 // import { randomUUID } from 'crypto';
 
 @Module({
@@ -85,6 +86,10 @@ import redisContant from '@app/lib/redis/redis.contant';
         db: appConfig().REDIS_CLUSTER.REDIS2_DB,
       },
     ]),
+    MeiliSearchModule.forRoot({
+      host: appConfig().MEILISEARCH_URI,
+      apiKey: appConfig().MEILISEARCH_KEY,
+    }),
   ],
 })
 export class MainAppModule {

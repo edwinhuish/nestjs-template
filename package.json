@@ -49,6 +49,7 @@
     "lodash": "^4.17.21",
     "meilisearch": "^0.40.0",
     "mysql2": "^3.9.7",
+    "nestjs-meilisearch": "^2.1.6",
     "nestjs-pino": "^4.0.0",
     "openai": "^4.51.0",
     "pino-http": "^10.1.0",
