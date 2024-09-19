@@ -1,0 +1,46 @@
+services:
+
+  app:
+    build: nodejs
+    command: sleep infinity
+    env_file: .env
+    working_dir: $PWD
+    volumes:
+      - $PWD:$PWD
+      - ~/.ssh:/home/node/.ssh
+      - ~/.gitconfig:/home/node/.gitconfig
+    depends_on:
+      - mysql
+      - redis
+      - meilisearch
+  
+  mysql:
+    build: mysql
+    restart: unless-stopped
+    command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
+    env_file: .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DATABASE_MAIN_PASSWORD}
+    # ports:
+    #   - '3306:3306'
+    volumes:
+      - ./mysql/data:/var/lib/mysql/:rw
+      - ./mysql/sql:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7-alpine
+    # ports:
+    #   - '6379:6379'
+    restart: unless-stopped
+    env_file: .env
+
+  meilisearch:
+    build: meilisearch
+    restart: unless-stopped
+    env_file: .env
+    # ports:
+    #   - '7700:7700'
+    volumes:
+      - ./meilisearch/data:/meili_data:rw
+
+
