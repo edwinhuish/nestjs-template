@@ -7,10 +7,12 @@ export class OpenAIAccountService {
   constructor(private readonly openaiAccountRepo: OpenAIAccountsRepository) {}
 
   async addOpenAIAccount(api_name: string, api_key: string) {
-    return await this.openaiAccountRepo.save({
-      api_name: api_name,
-      api_key: api_key,
-    });
+    return await this.openaiAccountRepo.save(
+      this.openaiAccountRepo.create({
+        api_name: api_name,
+        api_key: api_key,
+      }),
+    );
   }
 
   async getOpenAIAccount(api_name: string) {
@@ -22,10 +24,12 @@ export class OpenAIAccountService {
   }
 
   async updateOpenAIAccount(api_name: string, api_key: string) {
-    return await this.openaiAccountRepo.save({
-      api_name: api_name,
-      api_key: api_key,
-    });
+    return await this.openaiAccountRepo.save(
+      this.openaiAccountRepo.create({
+        api_name: api_name,
+        api_key: api_key,
+      }),
+    );
   }
 
   async deleteOpenAIAccount(api_name: string) {

@@ -1,4 +1,11 @@
-import { Column, Entity, Index } from 'typeorm';
+import {
+  AfterLoad,
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  Index,
+} from 'typeorm';
 import { BaseEntity } from './base.entity';
 
 export interface IUserMetadata {
@@ -119,7 +126,7 @@ export class UsersEntity extends BaseEntity {
     type: 'simple-array',
     nullable: false,
     comment: 'user preferences',
-    default: '[]',
+    // default: '[]',
   })
   preferences: Array<number>;
 
@@ -127,7 +134,7 @@ export class UsersEntity extends BaseEntity {
     type: 'simple-array',
     nullable: false,
     comment: 'user taglist',
-    default: '[]',
+    // default: '[]',
   })
   tags: Array<number>;
 
@@ -136,4 +143,17 @@ export class UsersEntity extends BaseEntity {
     default: false,
   })
   is_suspended: boolean;
+
+  @AfterLoad()
+  @BeforeUpdate()
+  @BeforeInsert()
+  updateDefaults() {
+    if (!this.preferences) {
+      this.preferences = [];
+    }
+
+    if (!this.tags) {
+      this.tags = [];
+    }
+  }
 }

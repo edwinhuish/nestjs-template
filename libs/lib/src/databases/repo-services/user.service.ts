@@ -13,7 +13,7 @@ export class UserService {
     last_name: string;
     password: string;
   }) {
-    return await this.userRepo.save(payload);
+    return await this.userRepo.save(this.userRepo.create(payload));
   }
 
   async suspendUser(id: number) {

@@ -18,7 +18,7 @@ export class RBACService {
     private readonly roleOnPermissionRepo: PermissionOnRoleRepository,
     private readonly roleRepo: RolesRepository,
     private readonly permissionRepo: PermissionsRepository,
-  ) { }
+  ) {}
 
   async getUserAccess(payload: { user_id: number }) {
     const user = await this.userRepo.findByIdAndVerify(payload.user_id);
